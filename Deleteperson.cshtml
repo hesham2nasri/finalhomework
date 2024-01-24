@@ -1,0 +1,37 @@
+﻿@using WebMatrix.Data;
+@{
+    var name = "";
+    var phone = "";
+    var address = "";
+    var id = "";
+
+    if (IsPost)
+    {
+        id = Request["id"];
+        var db = Database.Open("homework");
+        var deleteCommand = "DELETE FROM homework WHERE ID = @0";
+        db.Execute(deleteCommand, id);
+        Response.Redirect("~/Displayperson");
+    }
+    
+}
+
+
+<!DOCTYPE html>
+<html>
+<body>
+    <h1>Delete a details</h1>
+    <form method="post">
+        <fieldset>
+            <legend>persons Information</legend>
+            <p>
+                <label for="id">Id:</label>
+                <input type="text" name="id" value="@Request.Form["id"]" />
+            </p>
+
+            
+            <p><input type="submit" name="buttonSubmit" value="Delete row" /></p>
+        </fieldset>
+    </form>
+</body>
+</html>

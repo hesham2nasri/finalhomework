@@ -1,0 +1,76 @@
+﻿@using WebMatrix.Data;
+@{
+
+    var db = Database.Open("homework");
+    var selectCommand = "SELECT * FROM person";
+
+    var searchTerm = "";
+
+    if (! Request["searchGenre"].IsEmpty())
+    {
+        selectCommand = "SELECT * FROM person WHERE name = @0";
+        searchTerm = Request["searchGenre"];
+    }
+    var selectedData = db.Query(selectCommand, searchTerm);
+    var grid = new WebGrid(source: selectedData, defaultSort: "name", rowsPerPage: 3);
+}
+
+
+<html>
+<head>
+
+    <meta charset="utf-8" />
+    <title>persons</title>
+    <style type="text/css">
+        .grid {
+            margin: 4px;
+            border-collapse: collapse;
+            width: 600px;
+        }
+
+            .grid th, .grid td {
+                border: 1px solid #C0C0C0;
+                padding: 5px;
+            }
+
+        .head {
+            background-color: #E8E8E8;
+            font-weight: bold;
+            color: #FFF;
+        }
+
+        .alt {
+            background-color: #E8E8E8;
+            color: #000;
+        }
+    </style>
+</head>
+<body>
+    <form method="get">
+        <div>
+            <label for="searchGenre">person to look for:</label>
+            <input type="text" name="searchGenre" value="" />
+            <input type="Submit" value="Search Genre" /><br />
+            <br />
+        </div>
+    </form>
+
+    <div>
+        <div>
+
+
+            @grid.GetHtml(
+            tableStyle: "grid",
+            headerStyle: "head",
+            alternatingRowStyle: "alt",
+            columns: grid.Columns(
+            grid.Column("name"),
+            grid.Column("phone"),
+            grid.Column("address")
+            )
+            )
+        </div>
+    </div>
+
+</body>
+</html>

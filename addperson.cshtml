@@ -1,0 +1,42 @@
+﻿@using WebMatrix.Data;
+@{
+    var name = "";
+    var phone = "";
+    var address = "";
+    if (IsPost)
+    {
+        name = Request["name"];
+        phone = Request["phone"];
+        address = Request["address"];
+        var db = Database.Open("homework");
+        var insertCommand = "INSERT INTO homework (name, phone, address) Values(@0, @1, @2)";
+        db.Execute(insertCommand, name, phone, address);
+        Response.Redirect("~/DisplayMovies");
+    }
+}
+
+
+<!DOCTYPE html>
+<html>
+<body>
+    <h1>Add a details</h1>
+    <form method="post">
+        <fieldset>
+            <legend>person Information</legend>
+            <p>
+                <label for="name">name:</label>
+                <input type="text" name="name" value="@Request.Form["name"]" />
+            </p>
+            <p>
+                <label for="phone">phone:</label>
+                <input type="text" name="phone" value="@Request.Form["phone"]" />
+            </p>
+            <p>
+                <label for="address">address:</label>
+                <input type="text" name="address" value="@Request.Form["address"]" />
+            </p>
+            <p><input type="submit" name="buttonSubmit" value="Add person" /></p>
+        </fieldset>
+    </form>
+</body>
+</html>
